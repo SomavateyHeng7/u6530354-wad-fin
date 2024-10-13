@@ -11,6 +11,6 @@ export async function POST(req) {
     await newCustomer.save();
     return NextResponse.json(newCustomer, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to create customer" }, { status: 500 });
+    return NextResponse.json({ error: `Failed to create customer: ${error.message}` }, { status: 500 });
   }
 }

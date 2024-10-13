@@ -27,9 +27,9 @@ export default function CustomerCRUD() {
 
   // Handle form submit for Add/Edit
   const handleCustomerSubmit = async (data) => {
-    const url = editMode ? `/api/customer/${selectedCustomer._id}` : `/api/createcustomer`;
-    const method = editMode ? "PUT" : "POST";
-
+    const url = `/api/createcustomer`;
+    const method = "POST";
+  
     try {
       const response = await fetch(url, {
         method,
@@ -38,8 +38,11 @@ export default function CustomerCRUD() {
         },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("Error in adding/updating customer");
-      alert(editMode ? "Customer updated!" : "Customer added!");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error in adding customer: ${errorData.error}`);
+      }
+      alert("Customer added!");
       resetForm();
       fetchCustomers(); // Refresh the customer list
     } catch (error) {
